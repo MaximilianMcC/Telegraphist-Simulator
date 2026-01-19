@@ -62,12 +62,7 @@ class ContinuousWave
 			}	
 		}
 	}
-
-	public void PlaySeconds(float seconds)
-	{
-		
-	}
-
+	
 	public void Unload()
 	{
 		Raylib.StopAudioStream(stream);

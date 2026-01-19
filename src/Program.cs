@@ -8,7 +8,6 @@ class Program
 		Raylib.InitAudioDevice();
 
 		ContinuousWave continuousWave = new ContinuousWave(440);
-		continuousWave.PlayContinuously();
 
 		while (!Raylib.WindowShouldClose())
 		{
