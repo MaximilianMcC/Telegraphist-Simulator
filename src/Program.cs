@@ -11,18 +11,19 @@ class Program
 		ContinuousWave continuousWave = new ContinuousWave(440);
 		MorseCodePlayer.ContinuousWave = continuousWave;
 
-		Console.WriteLine(wpm);
+		Training.Start();
 
 		while (!Raylib.WindowShouldClose())
 		{
-			if (Raylib.IsKeyDown(KeyboardKey.Space)) continuousWave.PlayContinuously();
+			// if (Raylib.IsKeyDown(KeyboardKey.Space)) continuousWave.PlayContinuously();
 
-			if (Raylib.IsKeyPressed(KeyboardKey.S)) MorseCodePlayer.Send("sos", wpm);
+			// if (Raylib.IsKeyPressed(KeyboardKey.S)) MorseCodePlayer.Send("sos", wpm);
+			Training.Update();
 			MorseCodePlayer.Update();
 
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
-			Raylib.DrawText($"morsing the code rn\n\n\n{MorseCodePlayer.SendingRn}", 10, 10, 30, Color.White);
+			Training.Render();
 			Raylib.EndDrawing();
 		}
 

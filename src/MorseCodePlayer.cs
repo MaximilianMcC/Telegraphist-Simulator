@@ -9,7 +9,20 @@ class MorseCodePlayer
 	private static int timingIndex;
 	private static double startTime;
 
-	public static void Send(string text, WpmTimings wpm)
+	public static void SendFromEnglish(string text, WpmTimings wpm)
+	{
+		// Turn the text into morse first
+		string morseString = MorseCodeConverter.EnglishToMorseString(text);
+		Send(morseString, wpm);
+	}
+
+	public static void SendFromMorse(string text, WpmTimings wpm)
+	{
+		Send(text, wpm);
+	}
+
+	// Works with morse
+	private static void Send(string morseString, WpmTimings wpm)
 	{
 		// Can only send one at once
 		// TODO: Make this instanced to avoid this
@@ -18,9 +31,6 @@ class MorseCodePlayer
 			Console.WriteLine("Can only send one thing at a time");
 			return;
 		}
-
-		// Turn the text into morse
-		string morseString = MorseCodeConverter.EnglishToMorseString(text);
 
 		// Store the sounds we gotta make
 		timings = new List<Timing>();

@@ -2,61 +2,33 @@ class MorseCodeConverter
 {
 	public static readonly Dictionary<char, string> MorseDictionary = new Dictionary<char, string>
 	{
-		{'A', ".-"},
-		{'B', "-..."},
-		{'C', "-.-."},
-		{'D', "-.."},
-		{'E', "."},
-		{'F', "..-."},
-		{'G', "--."},
-		{'H', "...."},
-		{'I', ".."},
-		{'J', ".---"},
-		{'K', "-.-"},
-		{'L', ".-.."},
-		{'M', "--"},
-		{'N', "-."},
-		{'O', "---"},
-		{'P', ".--."},
-		{'Q', "--.-"},
-		{'R', ".-."},
-		{'S', "..."},
-		{'T', "-"},
-		{'U', "..-"},
-		{'V', "...-"},
-		{'W', ".--"},
-		{'X', "-..-"},
-		{'Y', "-.--"},
-		{'Z', "--.."},
-		{'1', ".----"},
-		{'2', "..---"},
-		{'3', "...--"},
-		{'4', "....-"},
-		{'5', "....."},
-		{'6', "-...."},
-		{'7', "--..."},
-		{'8', "---.."},
-		{'9', "----."},
-		{'0', "-----"},
-		{'.', ".-.-.-"},
-		{',', "--..--"},
-		{'?', "..--.."},
-		{'\'', ".----."},
-		{'!', "-.-.--"},
-		{'/', "-..-."},
-		{'(', "-.--."},
-		{')', "-.--.-"},
-		{'&', ".-..."},
-		{':', "---..."},
-		{';', "-.-.-."},
-		{'=', "-...-"},
-		{'+', ".-.-."},
-		{'-', "-....-"},
-		{'_', "..--.-"},
-		{'"', ".-..-."},
-		{'$', "...-..-"},
-		{'@', ".--.-."},
-		{' ', "/"}
+		{ 'A', ".-" },
+		{ 'B', "-..." },
+		{ 'C', "-.-." },
+		{ 'D', "-.." },
+		{ 'E', "." },
+		{ 'F', "..-." },
+		{ 'G', "--." },
+		{ 'H', "...." },
+		{ 'I', ".." },
+		{ 'J', ".---" },
+		{ 'K', "-.-" },
+		{ 'L', ".-.." },
+		{ 'M', "--" },
+		{ 'N', "-." },
+		{ 'O', "---" },
+		{ 'P', ".--." },
+		{ 'Q', "--.-" },
+		{ 'R', ".-." },
+		{ 'S', "..." },
+		{ 'T', "-" },
+		{ 'U', "..-" },
+		{ 'V', "...-" },
+		{ 'W', ".--" },
+		{ 'X', "-..-" },
+		{ 'Y', "-.--" },
+		{ 'Z', "--.." },
+		{ ' ', "/" }
 	};
 
 	public static string EnglishToMorseString(string english)
@@ -77,6 +49,27 @@ class MorseCodeConverter
 
 	public static string MorseToEnglish(string morse)
 	{
-		return "";
+		string output = "";
+		foreach (string morseLetter in morse.Split(" "))
+		{
+			char englishLetter = MorseDictionary.FirstOrDefault(letter => letter.Value == morseLetter).Key;
+			output += englishLetter;
+		}
+
+		return output;
+	}
+
+	public static char GetRandomEnglishLetter()
+	{
+		//? -2 because we do not want the last one (space)
+		Random random = new Random();
+		return MorseDictionary.Keys.ToList()[random.Next(0, MorseDictionary.Count - 2)];
+	}
+
+	public static string GetRandomMorseLetter()
+	{
+		//? -2 because we do not want the last one (space)
+		Random random = new Random();
+		return MorseDictionary.Values.ToList()[random.Next(0, MorseDictionary.Count - 2)];
 	}
 }
