@@ -1,16 +1,35 @@
-class MorseCode
+using Raylib_cs;
+
+class MorseCodePlayer
 {
-	public static void Play(string text, WpmTimings wpm)
+	public static bool SendingRn { get; private set; }
+	public static ContinuousWave ContinuousWave { get; set; }
+
+	private static List<Timing> timings;
+	private static int timingIndex;
+	private static double startTime;
+
+	public static void Send(string text, WpmTimings wpm)
 	{
+		// Can only send one at once
+		// TODO: Make this instanced to avoid this
+		if (SendingRn)
+		{
+			Console.WriteLine("Can only send one thing at a time");
+			return;
+		}
+
 		// Turn the text into morse
 		string morseString = MorseCodeConverter.EnglishToMorseString(text);
 
 		// Store the sounds we gotta make
-		List<Timing> timings = new List<Timing>();
+		timings = new List<Timing>();
 
 		// Loop over each character
 		for (int i = 0; i < morseString.Length; i++)
 		{
+			Console.WriteLine(morseString[i]);
+			
 			// Check for what we are
 			// TODO: wpm.GetDuration('.') then use a dictionary or smth
 			switch (morseString[i])
@@ -37,13 +56,36 @@ class MorseCode
 			if ((morseString[i] == '.' || morseString[i] == '-') && i < morseString.Length)
 			{
 				timings.Add(new Timing(true, wpm.KeyGap));
-			}	
+			}
 		}
+
+		SendingRn = true;
+		timingIndex = 0;
+		startTime = Raylib.GetTime();
 	}
 
 	public static void Update()
 	{
-		
+		if (SendingRn == false) return;
+
+		// Check for if we've finished
+		if (timingIndex >= timings.Count)
+		{
+			SendingRn = false;
+			return;
+		}
+
+		// Check for if we must play a sound or stay quiet
+		if (timings[timingIndex].Gap == false) ContinuousWave.PlayContinuously();
+
+		// Check for if we need to move onto the
+		// next timing section thingy
+		double elapsedTime = Raylib.GetTime() - startTime;
+		if (elapsedTime >= timings[timingIndex].Duration)
+		{
+			timingIndex++;
+			startTime = Raylib.GetTime();
+		}
 	}
 }
 
@@ -78,5 +120,16 @@ struct WpmTimings
 		KeyGap = dit;
 		LetterGap = dit * 3;
 		Space = dit * 7;
+	}
+
+	// TODO: remove (debug)
+	public override string ToString()
+	{
+		return
+			$"Dit: {Dit}" +
+			$"\nDah: {Dah}" +
+			$"\nKeyGap: {KeyGap}" +
+			$"\nLetterGap: {LetterGap}" +
+			$"\nSpace: {Space}";
 	}
 }
