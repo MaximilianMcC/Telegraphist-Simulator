@@ -2,7 +2,9 @@ using Raylib_cs;
 
 class ContinuousWave
 {
-	private static bool setBuffer;
+	public List<WaveEffect> Effects = [];
+
+	private static bool haveAlreadySetBufferSize = false;
 
 	private AudioStream stream;
 
@@ -17,7 +19,7 @@ class ContinuousWave
 	public ContinuousWave(double frequency = 440)
 	{
 		// Ensure that we use the correct buffer size
-		if (setBuffer == false)
+		if (haveAlreadySetBufferSize == false)
 		{
 			Raylib.SetAudioStreamBufferSizeDefault(buffer);
 		}
@@ -33,6 +35,23 @@ class ContinuousWave
 		Raylib.PlayAudioStream(stream);
 	}
 
+	private short GenerateSampleFromEffects()
+	{
+		// Combine all effects
+		double sample = 0;
+		foreach (WaveEffect wave in Effects)
+		{
+			sample += wave.GenerateSample(phase);
+		}
+
+		// Remove any distortion/normalise
+		// And scale to something that we can hear
+		sample = Math.Clamp(sample, -1d, 1d);
+		sample *= 32000d;
+
+		return (short)sample;
+	}
+
 	public void PlayContinuously()
 	{
 		// Check for if we need more audio
@@ -42,7 +61,7 @@ class ContinuousWave
 			for (int i = 0; i < buffer; i++)
 			{
 				// Get what sound should be made rn
-				samples[i] = (short)(Math.Sin(2 * Math.PI * phase) * 32000);
+				samples[i] = GenerateSampleFromEffects();
 
 				// Add it to the wave
 				phase += phaseIncrement;
