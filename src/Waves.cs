@@ -1,4 +1,6 @@
-abstract class WaveEffect
+interface Effect;
+
+abstract class WaveEffect : Effect
 {
 	protected double strength;
 	public WaveEffect(double strength = 1d)

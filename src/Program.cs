@@ -9,26 +9,33 @@ class Program
 
 		WpmTimings wpm = new WpmTimings(10);
 
-		ContinuousWave continuousWave = new ContinuousWave();
-		continuousWave.Effects.Add(new SawtoothWave(0.3d));
-		continuousWave.Effects.Add(new SineWave(0.9d));
+		ContinuousWave continuousWave = new ContinuousWave(800);
+		// continuousWave.Effects.Add(new SawtoothWave(0.3d));
+		continuousWave.Effects.Add(new SineWave(1d));
 
 		MorseCodePlayer.ContinuousWave = continuousWave;
 
 		Training.Start();
 
+		string lastThingDid = "";
+
 		while (!Raylib.WindowShouldClose())
 		{
-			if (Raylib.IsKeyDown(KeyboardKey.Space)) continuousWave.PlayContinuously();
+			Input.Update();
+
+			if (Input.KeyDown) continuousWave.PlayContinuously();
 
 			// if (Raylib.IsKeyPressed(KeyboardKey.S)) MorseCodePlayer.Send("sos", wpm);
 			// Training.Update();
 			MorseCodePlayer.Update();
 
+			if (Input.Dit()) lastThingDid = "Dit";
+			if (Input.Dah()) lastThingDid = "Dah";
+
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
 			// Training.Render();
-			// Raylib.DrawText($"{Input.KeyDown}", 10, 10, 30, Color.White);
+			Raylib.DrawText($"{Input.KeyDown}\n\n{lastThingDid}", 10, 10, 30, Color.White);
 			Raylib.EndDrawing();
 		}
 
