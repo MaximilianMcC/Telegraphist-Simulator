@@ -1,6 +1,6 @@
 abstract class UiElement
 {
-	public int Index { get; protected set; }
+	public int Index { get; protected set; } 
 	public bool Selected { get; set; }
 
 	public virtual void Update() { }
@@ -13,11 +13,19 @@ static class UiHandler
 	public static List<UiElement> Elements = [];
 	private static int currentElementIndex = 0;
 
+	public static void AddElement(UiElement element)
+	{
+		Elements.Add(element);
+
+		// If this is the first element then select it
+		if (Elements.Count == 1) element.Selected = true;
+	}
+
 	public static void Update()
 	{
 		// Move onto the next element
-		// TODO: i (..) to move to previous element
-		// if (Input.Dit)
+		// TODO: i (..) to move to previous element maybe
+		if (Input.FinishedDit)
 		{
 			// Check for if we even have any elements to switch to
 			if (Elements.Count <= 1) return;

@@ -10,13 +10,7 @@ class Button : UiElement
 
 	public Button(string text)
 	{
-		// Our index is just our position in the list
-		//? saving the index might be useless ngl if we just use the list
-		UiHandler.Elements.Add(this);
-		Index = UiHandler.Elements.Count - 1;
-
-		// If we're the only element then select ourself
-		if (UiHandler.Elements.Count == 1) Selected = true;
+		Index = UiHandler.Elements.Count;
 
 		Text = text;
 
@@ -24,7 +18,7 @@ class Button : UiElement
 		const float elementMargin = 10f;
 		shape = new Rectangle(
 			new Vector2(
-				elementMargin,
+				elementMargin + 300,
 		        Index * (Size.Y + elementMargin) + elementMargin
 			),
 			Size
