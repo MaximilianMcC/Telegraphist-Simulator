@@ -38,4 +38,8 @@ static class Input
 	// Check for if we have just finished doing something (keyPressed)
 	public static bool FinishedDit => justReleased && (HoldTime <= MaxDitTime);
 	public static bool FinishedDah => justReleased && ((HoldTime > MaxDitTime) && (HoldTime <= MaxDahTime));
+
+	// Check for if we are currently doing something (keyDown)
+	public static bool DoingDit => KeyDownRn && HoldTime <= MaxDitTime;
+	public static bool DoingDah => KeyDownRn && (HoldTime > MaxDitTime) && (HoldTime <= MaxDahTime);
 }
