@@ -17,11 +17,15 @@ class Program
 
 		Training.Start();
 
-		string lastThingDid = "";
+		UiHandler.Elements.Add(new Button("test 1"));
+		UiHandler.Elements.Add(new Button("test 2"));
+		UiHandler.Elements.Add(new Button("test 3"));
+
 
 		while (!Raylib.WindowShouldClose())
 		{
 			Input.Update();
+			UiHandler.Update();
 
 			if (Input.KeyDown) continuousWave.PlayContinuously();
 
@@ -29,13 +33,16 @@ class Program
 			// Training.Update();
 			MorseCodePlayer.Update();
 
-			if (Input.Dit()) lastThingDid = "Dit";
-			if (Input.Dah()) lastThingDid = "Dah";
+
+			string lastThingDid = "";
+			if (Input.DoingDit) lastThingDid = "Dit";
+			else if (Input.DoingDah) lastThingDid = "Dah";
 
 			Raylib.BeginDrawing();
 			Raylib.ClearBackground(Color.Black);
 			// Training.Render();
-			Raylib.DrawText($"{Input.KeyDown}\n\n{lastThingDid}", 10, 10, 30, Color.White);
+			UiHandler.Render();
+			Raylib.DrawText($"{Input.KeyDown}\n\n{lastThingDid}", 10, 400, 20, Color.White);
 			Raylib.EndDrawing();
 		}
 
