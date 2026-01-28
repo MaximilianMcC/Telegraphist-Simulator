@@ -13,12 +13,15 @@ static class UiHandler
 	public static List<UiElement> Elements = [];
 	private static int currentElementIndex = 0;
 
-	public static void AddElement(UiElement element)
+	public static UiElement AddElement(UiElement element)
 	{
 		Elements.Add(element);
 
 		// If this is the first element then select it
 		if (Elements.Count == 1) element.Selected = true;
+
+		// Give back our element so we can do whatever with it
+		return element;
 	}
 
 	public static void Update()
@@ -38,6 +41,11 @@ static class UiHandler
 			// Unselect the old element and select the new one instead
 			Elements[previousElementIndex].Selected = false;
 			Elements[currentElementIndex].Selected = true;
+		}
+
+		foreach (UiElement element in Elements)
+		{
+			element.Update();
 		}
 	}
 

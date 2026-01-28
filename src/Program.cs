@@ -26,7 +26,7 @@ class Program
 		while (!Raylib.WindowShouldClose())
 		{
 			Input.Update();
-			UiHandler.Update();
+			UiHandler.Update(); 
 
 			Raylib.BeginDrawing();
 			TextDrawer.BeginDrawing();
