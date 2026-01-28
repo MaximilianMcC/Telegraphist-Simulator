@@ -41,6 +41,7 @@ class Program
 			TextDrawer.DrawGap();
 
 			Color color = Input.HoldTime > Input.MaxDitTime ? Color.Beige : Color.Gold;
+			if (Input.HoldTime > Input.MaxDahTime) color = Color.Red;
 			TextDrawer.DrawLine($"{Input.HoldTime:0.000}s", color);
 
 			string status = "";

@@ -4,6 +4,7 @@ using Raylib_cs;
 class Button : UiElement
 {
 	public string Text { get; set; }
+	public bool Clicked { get; set; }
 
 	private Rectangle shape;
 
@@ -31,24 +32,30 @@ class Button : UiElement
 		if (Selected == false) return;
 
 		// If we've done a dah then the button has been pressed
-		if (Input.FinishedDah)
+		if (Input.FinishedDahNoMax)
 		{
+			Clicked = true;
 			Text = "clicked";
 		}
 	}
 
 	public override void Draw()
 	{
-		// If we're 'being' clicked then draw the progress
-		if (Selected)
+		// If we're 'being' clicked then update the progress
+		float progress = Clicked ? 1 : 0;
+		if (Selected && !Clicked)
 		{
-			float progress = (float)Math.Min(Input.HoldTime / Input.MaxDahTime, 1f);
-			Raylib.DrawRectangleV(
-				shape.Position,
-				shape.Size * new Vector2(progress, 1),
-				Color.Orange
-			);
+			// Adjusted time makes it feel more like a button (0.2% overshoot allowed)
+			double adjustedTime = Input.MaxDahTime * 0.8f;
+			progress = (float)Math.Min(Input.HoldTime / adjustedTime, 1f);
 		}
+
+		// Draw the background
+		Raylib.DrawRectangleV(
+			shape.Position,
+			shape.Size * new Vector2(progress, 1),
+			Color.Orange
+		);
 
 		// Draw the outline
 		float thickness = Selected ? 4f : 1f;
