@@ -17,7 +17,7 @@ static class UiHandler
 	{
 		// Move onto the next element
 		// TODO: i (..) to move to previous element
-		if (Input.Dit)
+		// if (Input.Dit)
 		{
 			// Check for if we even have any elements to switch to
 			if (Elements.Count <= 1) return;

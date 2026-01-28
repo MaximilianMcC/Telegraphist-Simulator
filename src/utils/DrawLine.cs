@@ -12,6 +12,8 @@ static class TextDrawer
 	public static void DrawLine(string text, int fontSize, Color color)
 	{
 		Raylib.DrawText(text, (int)Padding, (int)(Padding + y), fontSize, color);
-		y += fontSize + Padding;
+		y += ((text.Split("\n").Length) * fontSize) + Padding;
 	}
+
+	public static void DrawGap() => DrawLine("");
 }

@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 
-static class Utils
+static partial class Utils
 {
 	public static void DrawCentreText(string text, float fontSize)
 	{

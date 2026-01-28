@@ -2,46 +2,40 @@ using Raylib_cs;
 
 static class Input
 {
-	// TODO: Use wpm class
-	private const double DitMax = 0.3;
+	//! temp
+	// TODO: Use wpm paris class thingy
+	public static readonly double MaxDitTime = 0.3d;
+	public static readonly double MaxDahTime = MaxDitTime * 3;
+
+	private static bool justReleased = false;
+	public static bool KeyDownRn { get; private set; }
 
 	private static double keyDownTimestamp;
-	private static bool keyDown;
+	public static double HoldTime => (KeyDownRn || justReleased) ? Raylib.GetTime() - keyDownTimestamp : 0f;
 
-	public static bool Started { get; private set; }
-	public static bool Stopped { get; private set; }
-
-	public static double HoldTime => keyDown ? Raylib.GetTime() - keyDownTimestamp : 0;
-
-	// Stuff that is currently happening (KeyDown)
-	public static bool DoingDit => keyDown && HoldTime >= 0 && HoldTime < DitMax;
-	public static bool DoingDah => keyDown && HoldTime >= DitMax;
-
-	// Stuff that has just been done (KeyPressed)
-	public static bool Dit => Stopped && HoldTime < DitMax;
-	public static bool Dah => Stopped && HoldTime >= DitMax;
-
-	public static bool KeyDown => keyDown;
 
 	public static void Update()
 	{
-		// Reset our state
-		Started = false;
-		Stopped = false;
+		justReleased = false;
 
 		// Check for if we are starting a hold
 		if (Raylib.IsKeyPressed(KeyboardKey.Space))
 		{
-			keyDown = true;
+			KeyDownRn = true;
+
+			// reest/start the timer
 			keyDownTimestamp = Raylib.GetTime();
-			Started = true;
 		}
 
 		// Check for if we are ending a hold
 		if (Raylib.IsKeyReleased(KeyboardKey.Space))
 		{
-			Stopped = true;
-			keyDown = false;
+			KeyDownRn = false;
+			justReleased = true;
 		}
 	}
+
+	// Check for if we have just finished doing something (keyPressed)
+	public static bool FinishedDit => justReleased && (HoldTime <= MaxDitTime);
+	public static bool FinishedDah => justReleased && ((HoldTime > MaxDitTime) && (HoldTime <= MaxDahTime));
 }
